@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+  <body>
+
+    <ul>
+      {% for person in people%}
+        <li> {{ person }} </li>
+      {% endfor %}
+    </ul>
+
+    <h2>New Person</h2>
+
+    <form method="POST" action="{{ url_for('index') }}">
+      <input type="text" name="name" placeholder="Name" required="required"><br>
+      <input type="number" name="age" placeholder="Age" required="required"><br>
+      <input type="submit" value="Create">
+    </form>
+
+    <a href="{{ url_for('delete')}}">Delete</a>
+
+    <ul>
+      {% for age in ages%}
+        <li> <a href="{{ url_for('filter', age=age)}}">{{ age }}</a> </li>
+      {% endfor %}
+    </ul>
+    
+
+  </body>
+</html>

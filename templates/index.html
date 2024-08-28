@@ -16,18 +16,21 @@
 
     <form method="POST" action="{{ url_for('index') }}">
       <input type="text" name="name" placeholder="Name" required="required"><br>
-      <input type="number" name="age" placeholder="Age" required="required"><br>
+      <input type="text" name="date" placeholder="Date" required="required"><br>
       <input type="submit" value="Create">
     </form>
 
     <a href="{{ url_for('delete')}}">Delete</a>
+    <a href="{{ url_for('upload')}}">Upload</a>
 
     <ul>
-      {% for age in ages%}
-        <li> <a href="{{ url_for('filter', age=age)}}">{{ age }}</a> </li>
+      {% for date in dates%}
+        <li> <a href="{{ url_for('filter', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}">
+          <img src="{{ url_for('get_img', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}"/>
+        </a> </li>
       {% endfor %}
     </ul>
-    
+
 
   </body>
 </html>

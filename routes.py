@@ -1,18 +1,19 @@
-from flask import Flask, url_for, render_template, request
-from models import Person
+from flask import Flask, url_for, render_template, request, Response
+from models import Person, Picture
+from werkzeug.utils import secure_filename
 
 def render_index(people):
-    ages = []
+    dates = []
     for person in people:
         new = 1
-        for age in ages:
-            if person.age == age: new = 0
+        for date in dates:
+            if person.date == date: new = 0
         
-        if new == 1: ages.append(person.age)
+        if new == 1: dates.append(person.date)
 
-    ages.sort(reverse=True)
+    dates.sort(reverse=True)
 
-    return render_template('index.html', people=people, ages=ages)
+    return render_template('index.html', people=people, dates=dates)
 
 def register_routes(app, db):
 
@@ -23,15 +24,15 @@ def register_routes(app, db):
             return render_index(people)
         elif request.method == 'POST':
             name = request.form.get('name')
-            age = request.form.get('age')
+            date = request.form.get('date')
 
             people = Person.query.all()
 
             for person in people:
-                if person.name == name and person.age == int(age):
+                if person.name == name and person.date == date:
                     return render_index(people)
 
-            person = Person(name=name, age=age)
+            person = Person(name=name, date=date)
 
             db.session.add(person)
             db.session.commit()
@@ -61,13 +62,62 @@ def register_routes(app, db):
             people = Person.query.all()
             return render_template('redirect.html')
         
-    @app.route('/filter/<int:age>', methods=['GET', 'POST'])
-    def filter(age):
+    @app.route('/filter/<day>/<month>/<year>', methods=['GET', 'POST'])
+    def filter(day, month, year):
          if request.method == 'GET':
             people = Person.query.all()
             filtered = []
+
+            date = f"{day}/{month}/{year}"
+
+            print(date)
             
             for person in people:
-                if person.age == age: filtered.append(person)
+                if person.date == date: filtered.append(person)
 
             return render_template('sobre.html', people=filtered)
+         
+    @app.route('/upload', methods=['GET', 'POST'])
+    def upload():
+        if request.method == 'GET':
+            imgs = Picture.query.all()
+            return render_template('upload.html', imgs=imgs)
+        elif request.method == 'POST':
+            file = request.files['file']
+            date = request.form.get('date')
+
+            if not file:
+                return 'No file uploaded!', 400
+
+            filename = secure_filename(file.filename)
+            mimetype = file.mimetype
+            if not filename or not mimetype:
+                return 'Bad upload!', 400
+
+            img = Picture(img=file.read(), name=filename, mimetype=mimetype, date=date)
+            db.session.add(img)
+            db.session.commit()
+
+            return render_template('redirect.html')
+
+
+    @app.route('/<day>/<month>/<year>')
+    def get_img(day, month, year):
+        date = f"{day}/{month}/{year}"
+        img = Picture.query.filter_by(date=date).first()
+        if not img:
+            return 'Img Not Found!', 404
+
+        return Response(img.img, mimetype=img.mimetype)
+    
+    @app.route('/delete/<int:id>', methods=['POST'])
+    def delete_img(id):
+            imgs = Picture.query.all()
+
+            for img in imgs:
+                if img.id == id: db.session.delete(img)
+            
+            db.session.commit()
+
+            imgs = Picture.query.all()
+            return render_template('upload.html', imgs=imgs)

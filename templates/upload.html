@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+  <body>
+
+    <h2>Upload file</h2>
+
+    <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+      <input type="file" name="file" placeholder="upload" required="required" accept="image/png, image/jpeg, image/jpg"><br>
+      <input type="text" name="date" placeholder="Date" required="required"><br>
+      <input type="submit" value="Create">
+    </form>
+    
+    <ul>
+      {% for img in imgs%}
+        <li>   <div>{{ img.date }}</div>
+          <img src="{{ url_for('get_img', day=img.date.split('/')[0], month=img.date.split('/')[1], year=img.date.split('/')[2] )}}"/>
+          <form method="POST" action="{{ url_for('delete_img', id=img.id) }}" style="display: inline">
+            <input type="submit" value="Delete">
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+
+
+  </body>
+</html>

@@ -1,19 +1,47 @@
 from flask import Flask, url_for, render_template, request, Response
 from models import Person, Picture
 from werkzeug.utils import secure_filename
+from functools import cmp_to_key
+
+class Pessoa():
+
+    def __init__(self, name):
+        self.name = name
+        self.qtd = 1
+
+    def inc_qtd(self):
+        self.qtd += 1
+
+    def get_name(self):
+        return self.name
+
+    def __repr__(self):
+        return f'{self.name} - {self.qtd}'
+
+def compare(person1, person2):
+    return person1.qtd - person2.qtd
+ 
 
 def render_index(people):
-    dates = []
+    pessoas = []
     for person in people:
         new = 1
-        for date in dates:
-            if person.date == date: new = 0
-        
-        if new == 1: dates.append(person.date)
+        for pessoa in pessoas:
+            if pessoa.get_name() == person.name: 
+                pessoa.inc_qtd()
+                new = 0
+                break
+        if new: pessoas.append(Pessoa(person.name))
+    pessoas.sort(reverse=True, key=cmp_to_key(compare))
+
+    dates = []
+    images = Picture.query.all()
+    for image in images:
+        dates.append(image.date)
 
     dates.sort(reverse=True)
 
-    return render_template('index.html', people=people, dates=dates)
+    return render_template('index.html', people=pessoas, dates=dates)
 
 def register_routes(app, db):
 

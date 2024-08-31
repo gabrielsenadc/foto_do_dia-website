@@ -46,16 +46,17 @@ def register_routes(app, db):
             people = Person.query.all()
             return render_template('sobre.html', people=people)
     
-    @app.route('/delete/<name>', methods=['GET', 'POST'])
-    def delete_someone(name):
+    @app.route('/delete/<name>/<day>/<month>/<year>', methods=['GET', 'POST'])
+    def delete_someone(name, day, month, year):
         if request.method == 'GET':
             people = Person.query.all()
             return render_template('sobre.html', people=people)
         elif request.method == 'POST':
             people = Person.query.all()
+            date = f"{day}/{month}/{year}"
 
             for person in people:
-                if person.name == name: db.session.delete(person)
+                if person.name == name and person.date == date: db.session.delete(person)
             
             db.session.commit()
 
@@ -64,7 +65,7 @@ def register_routes(app, db):
         
     @app.route('/filter/<day>/<month>/<year>', methods=['GET', 'POST'])
     def filter(day, month, year):
-         if request.method == 'GET':
+        if request.method == 'GET':
             people = Person.query.all()
             filtered = []
 
@@ -75,7 +76,30 @@ def register_routes(app, db):
             for person in people:
                 if person.date == date: filtered.append(person)
 
-            return render_template('sobre.html', people=filtered)
+            return render_template('sobre.html', people=filtered, date=date)
+        if request.method == 'POST':
+            name = request.form.get('name')
+            date = f"{day}/{month}/{year}"
+
+            people = Person.query.all()
+
+            for person in people:
+                if person.name == name and person.date == date:
+                    return render_index(people)
+
+            person = Person(name=name, date=date)
+
+            db.session.add(person)
+            db.session.commit()
+
+            new_people = Person.query.all()
+            filtered = []
+
+            for person in new_people:
+                if person.date == date: filtered.append(person)
+
+            return render_template('sobre.html', people=filtered, date=date)
+
          
     @app.route('/upload', methods=['GET', 'POST'])
     def upload():
@@ -98,7 +122,7 @@ def register_routes(app, db):
             db.session.add(img)
             db.session.commit()
 
-            return render_template('redirect.html')
+            return render_template('redirect.html', date=date)
 
 
     @app.route('/<day>/<month>/<year>')

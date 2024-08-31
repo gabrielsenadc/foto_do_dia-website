@@ -9,12 +9,19 @@
     <ul>
         {% for person in people%}
           <li> {{ person }} 
-            <form method="POST" action="{{ url_for('delete_someone', name=person.name) }}" style="display: inline">
+            <form method="POST" action="{{ url_for('delete_someone', name=person.name, day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2]) }}" style="display: inline">
               <input type="submit" value="Delete">
             </form>
           </li>
         {% endfor %}
     </ul>
+
+    <h2>Add someone to this date</h2>
+
+    <form method="POST" action="{{ url_for('filter', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2]) }}">
+      <input type="text" name="name" placeholder="Name" required="required"><br>
+      <input type="submit" value="Create">
+    </form>
 
     
 </body>

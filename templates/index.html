@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles.css') }}">
   <body>
 
     <ul>
@@ -23,13 +24,13 @@
     <a href="{{ url_for('delete')}}">Delete</a>
     <a href="{{ url_for('upload')}}">Upload</a>
 
-    <ul>
-      {% for date in dates%}
-        <li> <a href="{{ url_for('filter', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}">
-          <img src="{{ url_for('get_img', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}"/>
-        </a> </li>
-      {% endfor %}
-    </ul>
+    <div class="image-grid">
+        {% for date in dates%}
+          <div> <a href="{{ url_for('filter', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}">
+            <img src="{{ url_for('get_img', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}"/>
+          </a> </div>
+        {% endfor %}
+    </div>
 
 
   </body>

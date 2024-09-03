@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/upload.css') }}">
   <body>
 
     <h2>Upload file</h2>
@@ -14,16 +15,19 @@
       <input type="submit" value="Create">
     </form>
     
-    <ul>
+    <div class="image-grid">
       {% for img in imgs%}
-        <li>   <div>{{ img.date }}</div>
-          <img src="{{ url_for('get_img', day=img.date.split('/')[0], month=img.date.split('/')[1], year=img.date.split('/')[2] )}}"/>
+      <div class="secao">
+        <img src="{{ url_for('get_img', day=img.date.split('/')[0], month=img.date.split('/')[1], year=img.date.split('/')[2] )}}"/>
+        <div class="options">
+          <div>{{ img.date }}</div>
           <form method="POST" action="{{ url_for('delete_img', id=img.id) }}" style="display: inline">
             <input type="submit" value="Delete">
           </form>
-        </li>
+        </div>
+      </div>
       {% endfor %}
-    </ul>
+      </div>
 
 
   </body>

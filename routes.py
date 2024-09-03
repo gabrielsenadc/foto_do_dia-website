@@ -5,12 +5,14 @@ from functools import cmp_to_key
 
 class Pessoa():
 
-    def __init__(self, name):
+    def __init__(self, name, first):
         self.name = name
         self.qtd = 1
+        self.last = first
 
-    def inc_qtd(self):
+    def inc_qtd(self, date):
         self.qtd += 1
+        self.last = date
 
     def get_name(self):
         return self.name
@@ -18,30 +20,55 @@ class Pessoa():
     def __repr__(self):
         return f'{self.name} - {self.qtd}'
 
-def compare(person1, person2):
-    return person1.qtd - person2.qtd
- 
 
-def render_index(people):
+def compare_dates(date1, date2):
+    day1 = int(date1.split("/")[0])
+    month1 = int(date1.split("/")[1])
+    year1 = int(date1.split("/")[2])
+
+    day2 = int(date2.split("/")[0])
+    month2 = int(date2.split("/")[1])
+    year2 = int(date2.split("/")[2])
+
+    if(year1 - year2): return year1 - year2
+    if(month1 - month2): return month1 - month2
+    return day1 - day2
+ 
+def compare(person1, person2):
+    if(person1.qtd - person2.qtd): return person1.qtd - person2.qtd
+    return compare_dates(person1.last, person2.last)
+
+def sort_people(people):
     pessoas = []
     for person in people:
         new = 1
         for pessoa in pessoas:
             if pessoa.get_name() == person.name: 
-                pessoa.inc_qtd()
+                pessoa.inc_qtd(person.date)
                 new = 0
                 break
-        if new: pessoas.append(Pessoa(person.name))
+        if new: pessoas.append(Pessoa(person.name, person.date))
     pessoas.sort(reverse=True, key=cmp_to_key(compare))
+    return pessoas
+
+def render_index(people):
+    pessoas = sort_people(people)
+
+    rank = []
+    count = 0
+    for pessoa in pessoas:
+        if(count >= 5): break
+        count += 1
+        rank.append(pessoa)
 
     dates = []
     images = Picture.query.all()
     for image in images:
         dates.append(image.date)
 
-    dates.sort(reverse=True)
+    dates.sort(reverse=True, key=cmp_to_key(compare_dates))
 
-    return render_template('index.html', people=pessoas, dates=dates)
+    return render_template('index.html', people=rank, dates=dates)
 
 def register_routes(app, db):
 
@@ -67,12 +94,6 @@ def register_routes(app, db):
 
             new_people = Person.query.all()
             return render_index(new_people)
-        
-    @app.route('/delete', methods=['GET', 'POST'])
-    def delete():
-        if request.method == 'GET':
-            people = Person.query.all()
-            return render_template('sobre.html', people=people)
     
     @app.route('/delete/<name>/<day>/<month>/<year>', methods=['GET', 'POST'])
     def delete_someone(name, day, month, year):
@@ -173,3 +194,10 @@ def register_routes(app, db):
 
             imgs = Picture.query.all()
             return render_template('upload.html', imgs=imgs)
+    
+    @app.route('/ranking')
+    def rank():
+        people = Person.query.all()
+        pessoas = sort_people(people)
+
+        return render_template('rank.html', people=pessoas)

@@ -4,14 +4,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
-    <link rel="stylesheet" href="{{ url_for('static',filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/main_page.css') }}">
   <body>
+    
+    <div class="header">
+      <a href="{{ url_for('upload')}}">Upload</a>
+      <a href="{{ url_for('rank')}}">Rank</a>
+    </div>
 
-    <ul>
+    <h1>Foto do Dia</h1>
+
+    
+    <div>Top 5</div>
+    <ol>
       {% for person in people%}
         <li> {{ person }} </li>
       {% endfor %}
-    </ul>
+    </ol>
 
     <h2>New Person</h2>
 
@@ -21,8 +30,7 @@
       <input type="submit" value="Create">
     </form>
 
-    <a href="{{ url_for('delete')}}">Delete</a>
-    <a href="{{ url_for('upload')}}">Upload</a>
+
 
     <div class="image-grid">
         {% for date in dates%}
@@ -31,6 +39,7 @@
           </a> </div>
         {% endfor %}
     </div>
+
 
 
   </body>

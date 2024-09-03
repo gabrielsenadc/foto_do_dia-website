@@ -1,0 +1,42 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+h1 {
+    text-align: center;
+    font-size: 48px;
+}
+
+.image-grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 10px;
+}
+
+img {
+    object-fit: cover;
+    width: 300px;
+    height: 300px;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    background-color: darkgrey;
+    width: 100%;
+}
+
+ol {
+    list-style-position: inside;
+    padding: 0;
+}

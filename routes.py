@@ -51,6 +51,79 @@ def sort_people(people):
     pessoas.sort(reverse=True, key=cmp_to_key(compare))
     return pessoas
 
+def latest_date():
+    images = Picture.query.all()
+
+    date = "01/08/2023"
+
+    for image in images:
+        if compare_dates(date, image.date) < 0: date = image.date
+
+    return date
+
+def next_date(date):
+    day = int(date.split("/")[0])
+    month = int(date.split("/")[1])
+    year = int(date.split("/")[2])
+
+    day += 1
+
+    if(month == 1 or month == 3 or month == 5 or month == 7 or month == 8 or month == 10 or month == 12):
+        if(day > 31):
+            day = 1
+            month += 1     
+    elif(month == 2):
+        if(year % 4 == 0):
+            if(day > 29):
+                day = 1
+                month += 1      
+        else:
+            if(day > 28):
+                day = 1
+                month += 1    
+    else:
+        if(day > 30):
+            day = 1
+            month += 1
+
+    if(month > 12):
+        month = 1
+        year += 1
+
+    latest = latest_date()
+    date = f"{day:02d}/{month:02d}/{year:04d}"
+
+    if compare_dates(date, latest) > 0: return None
+    return date
+    
+
+def previous_date(date):
+    day = int(date.split("/")[0])
+    month = int(date.split("/")[1])
+    year = int(date.split("/")[2])
+
+    day -= 1
+    if day == 0:
+        month -= 1
+        if(month == 1 or month == 3 or month == 5 or month == 7 or month == 8 or month == 10 or month == 12):
+            day = 31
+        elif(month == 2):
+            if(year % 4 == 0):
+                day = 29      
+            else:
+                day = 28 
+        else:
+            day = 30
+    if month == 0:
+        year -= 1
+        month = 12
+
+    date = f"{day:02d}/{month:02d}/{year:04d}"
+    if compare_dates(date, "01/08/2023") < 0: return None
+    return date
+            
+        
+
 def render_index(people):
     pessoas = sort_people(people)
 
@@ -69,6 +142,17 @@ def render_index(people):
     dates.sort(reverse=True, key=cmp_to_key(compare_dates))
 
     return render_template('index.html', people=rank, dates=dates)
+
+def render_sobre(people, date):
+    filtered = []
+
+    for person in people:
+        if person.date == date: filtered.append(person)
+
+    next = next_date(date)
+    previous = previous_date(date)
+
+    return render_template('sobre.html', people=filtered, date=date, previous=previous, next=next)
 
 def register_routes(app, db):
 
@@ -116,16 +200,9 @@ def register_routes(app, db):
     def filter(day, month, year):
         if request.method == 'GET':
             people = Person.query.all()
-            filtered = []
-
             date = f"{day}/{month}/{year}"
-
-            print(date)
             
-            for person in people:
-                if person.date == date: filtered.append(person)
-
-            return render_template('sobre.html', people=filtered, date=date)
+            return render_sobre(people, date)
         if request.method == 'POST':
             name = request.form.get('name')
             date = f"{day}/{month}/{year}"

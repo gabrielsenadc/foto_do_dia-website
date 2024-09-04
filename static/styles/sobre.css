@@ -1,0 +1,16 @@
+img {
+    object-fit: cover;
+    width: 300px;
+    height: 300px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    background-color: darkgrey;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}

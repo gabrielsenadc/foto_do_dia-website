@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/sobre.css') }}">
 </head>
 <body>
     <ul>
@@ -23,6 +24,15 @@
       <input type="submit" value="Create">
     </form>
 
-    
+    <img src="{{ url_for('get_img', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}"/>
+
+    <div class="footer">
+      {% if previous %}
+        <a href="{{ url_for('filter', day=previous.split('/')[0], month=previous.split('/')[1], year=previous.split('/')[2])}}">Previous</a>
+      {% endif %}
+      {% if next %}
+        <a href="{{ url_for('filter', day=next.split('/')[0], month=next.split('/')[1], year=next.split('/')[2])}}">Next</a>
+      {% endif %}
+    </div>
 </body>
 </html>

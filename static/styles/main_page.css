@@ -1,3 +1,7 @@
+body{
+    margin: 0;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -10,15 +14,15 @@ h1 {
 
 .image-grid {
     display: flex;
-    gap: 10px;
+    gap: 0.70vw;
     flex-wrap: wrap;
-    margin: 10px;
+    margin: 0.70vw;
 }
 
 img {
     object-fit: cover;
-    width: 300px;
-    height: 300px;
+    width: 19vw;
+    height: 19vw;
 }
 
 .options {

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/sobre.css') }}">
 </head>
 <body>
+  <div>
     <ul>
         {% for person in people%}
           <li> {{ person }} 
@@ -16,6 +17,7 @@
           </li>
         {% endfor %}
     </ul>
+    </div>
 
     <h2>Add someone to this date</h2>
 
@@ -24,7 +26,7 @@
       <input type="submit" value="Create">
     </form>
 
-    <img src="{{ url_for('get_img', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}"/>
+    <div><img src="{{ url_for('get_img', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}"/></div>
 
     <div class="footer">
       {% if previous %}

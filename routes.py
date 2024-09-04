@@ -224,7 +224,8 @@ def register_routes(app, db):
             for person in new_people:
                 if person.date == date: filtered.append(person)
 
-            return render_template('sobre.html', people=filtered, date=date)
+            people = Person.query.all()  
+            return render_sobre(people, date)
 
          
     @app.route('/upload', methods=['GET', 'POST'])

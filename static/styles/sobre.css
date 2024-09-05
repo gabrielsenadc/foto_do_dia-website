@@ -21,8 +21,34 @@ form{
     bottom: 0;
     left: 0;
     height: 50px;
-    background-color: darkgrey;
+    background-color: #1a73e8;
     width: 100%;
     display: flex;
     justify-content: space-between;
+}
+
+form {
+    margin: 20px;
+}
+
+h2 {
+    margin: 0;
+}
+
+a {
+    display: flex;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+a div:hover {
+    background-color: lightgray;
+}
+
+a div {
+    margin: auto;
+    padding: 5px;
+    background-color: white;
+    border-radius: 10%;
 }

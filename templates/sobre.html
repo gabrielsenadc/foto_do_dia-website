@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/sobre.css') }}">
 </head>
 <body>
+
+  <h1>{{date}}</h1>
   <div>
     <ul>
         {% for person in people%}
@@ -22,7 +24,7 @@
     <h2>Add someone to this date</h2>
 
     <form method="POST" action="{{ url_for('filter', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2]) }}">
-      <input type="text" name="name" placeholder="Name" required="required"><br>
+      <input type="text" name="name" placeholder="Name" required="required">
       <input type="submit" value="Create">
     </form>
 
@@ -30,10 +32,10 @@
 
     <div class="footer">
       {% if previous %}
-        <a href="{{ url_for('filter', day=previous.split('/')[0], month=previous.split('/')[1], year=previous.split('/')[2])}}">Previous</a>
+        <a href="{{ url_for('filter', day=previous.split('/')[0], month=previous.split('/')[1], year=previous.split('/')[2])}}"><div>Previous</div></a>
       {% endif %}
       {% if next %}
-        <a href="{{ url_for('filter', day=next.split('/')[0], month=next.split('/')[1], year=next.split('/')[2])}}">Next</a>
+        <a href="{{ url_for('filter', day=next.split('/')[0], month=next.split('/')[1], year=next.split('/')[2])}}"><div>Next</div></a>
       {% endif %}
     </div>
 </body>

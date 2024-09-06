@@ -5,6 +5,20 @@ body{
 .header {
     display: flex;
     justify-content: space-between;
+    background-color: #1a73e8;
+    padding: 25px;
+}
+
+.header a {
+    text-decoration: none;
+    color: black;
+    padding: 5px;
+    background-color: white;
+    border-radius: 10%;
+}
+
+.header a:hover {
+    background-color: lightgray;
 }
 
 h1 {

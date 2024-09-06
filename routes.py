@@ -90,10 +90,8 @@ def next_date(date):
         month = 1
         year += 1
 
-    latest = latest_date()
     date = f"{day:02d}/{month:02d}/{year:04d}"
 
-    if compare_dates(date, latest) > 0: return None
     return date
     
 
@@ -151,6 +149,8 @@ def render_sobre(people, date):
 
     next = next_date(date)
     previous = previous_date(date)
+
+    if compare_dates(next, latest_date()) > 0: next = None
 
     return render_template('sobre.html', people=filtered, date=date, previous=previous, next=next)
 
@@ -236,6 +236,13 @@ def register_routes(app, db):
         elif request.method == 'POST':
             file = request.files['file']
             date = request.form.get('date')
+
+            if date == "":
+                date = latest_date()
+                date = next_date(date)
+
+            print(f"date:{date};")
+            print(type(date))
 
             if not file:
                 return 'No file uploaded!', 400

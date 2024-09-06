@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template, request, Response
+from flask import Flask, url_for, render_template, request, Response, redirect
 from models import Person, Picture
 from werkzeug.utils import secure_filename
 from functools import cmp_to_key
@@ -162,22 +162,9 @@ def register_routes(app, db):
             people = Person.query.all()
             return render_index(people)
         elif request.method == 'POST':
-            name = request.form.get('name')
-            date = request.form.get('date')
-
-            people = Person.query.all()
-
-            for person in people:
-                if person.name == name and person.date == date:
-                    return render_index(people)
-
-            person = Person(name=name, date=date)
-
-            db.session.add(person)
-            db.session.commit()
-
-            new_people = Person.query.all()
-            return render_index(new_people)
+            name = request.form.get('name')  
+            name = name.lower()
+            return redirect(url_for("person", name=name))
     
     @app.route('/delete/<name>/<day>/<month>/<year>', methods=['GET', 'POST'])
     def delete_someone(name, day, month, year):
@@ -194,7 +181,7 @@ def register_routes(app, db):
             db.session.commit()
 
             people = Person.query.all()
-            return render_template('redirect.html')
+            return render_sobre(people, date)
         
     @app.route('/filter/<day>/<month>/<year>', methods=['GET', 'POST'])
     def filter(day, month, year):
@@ -205,6 +192,8 @@ def register_routes(app, db):
             return render_sobre(people, date)
         if request.method == 'POST':
             name = request.form.get('name')
+            name = name.lower()
+            print(name)
             date = f"{day}/{month}/{year}"
 
             people = Person.query.all()
@@ -286,3 +275,14 @@ def register_routes(app, db):
         pessoas = sort_people(people)
 
         return render_template('rank.html', people=pessoas)
+    
+    @app.route('/<name>')
+    def person(name):
+        people = Person.query.all()
+
+        list = []
+        for person in people:
+            if person.name == name: list.append(person.date)
+
+        return render_template('person.html', name=name, dates=list)
+    

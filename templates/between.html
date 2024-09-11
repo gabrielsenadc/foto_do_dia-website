@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Foto do Dia</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/main_page.css') }}">
+  <body>
+
+    <h1>{{start}} - {{end}}</h1>
+
+    
+    <div>Top 5</div>
+    <ol>
+      {% for person in people%}
+        <li> {{ person }} </li>
+      {% endfor %}
+    </ol>
+
+    <h2>Chosose two dates</h2>
+
+    <form method="POST" action="{{ url_for('between_dates') }}">
+      <input type="text" name="date1" placeholder="Start" required="required"><br>
+      <input type="text" name="date2" placeholder="End" required="required"><br>
+      <input type="submit" value="Search">
+    </form>
+
+
+
+    <div class="image-grid">
+        {% for date in dates%}
+          <div> <a href="{{ url_for('filter', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}">
+            <img src="{{ url_for('get_img', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}"/>
+          </a> </div>
+        {% endfor %}
+    </div>
+
+
+
+  </body>
+</html>

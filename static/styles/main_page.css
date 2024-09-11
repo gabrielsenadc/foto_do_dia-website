@@ -6,7 +6,7 @@ body{
     display: flex;
     justify-content: space-between;
     background-color: #1a73e8;
-    padding: 25px;
+    padding: 15px;
 }
 
 .header a {
@@ -15,6 +15,7 @@ body{
     padding: 5px;
     background-color: white;
     border-radius: 10%;
+    font-size: 15px;
 }
 
 .header a:hover {
@@ -28,9 +29,9 @@ h1 {
 
 .image-grid {
     display: flex;
-    gap: 0.70vw;
+    gap: 0.83vw;
     flex-wrap: wrap;
-    margin: 0.70vw;
+    margin: 0.83vw;
 }
 
 .image-grid div{

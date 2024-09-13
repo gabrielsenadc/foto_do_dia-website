@@ -9,7 +9,7 @@
     
     <div class="header">
       <a href="{{ url_for('upload')}}">Upload</a>
-      <a href="{{ url_for('rank')}}">Rank</a>
+      <a href="{{ url_for('rank', start=start, end=end)}}">Rank</a>
     </div>
 
     <h1>Foto do Dia</h1>
@@ -28,6 +28,15 @@
       <input type="text" name="name" placeholder="Name" required="required">
       <input type="submit" value="Search">
     </form>
+
+    <h2>Chosose two dates</h2>
+
+    <form method="POST" action="{{ url_for('between_dates') }}">
+      <input type="text" name="date1" placeholder="Start" required="required"><br>
+      <input type="text" name="date2" placeholder="End" required="required"><br>
+      <input type="submit" value="Search">
+    </form>
+
 
 
 

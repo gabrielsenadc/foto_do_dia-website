@@ -17,6 +17,8 @@
       {% endfor %}
     </ol>
 
+    <a href="{{ url_for('rank', start=start.replace('/', '_'), end=end.replace('/', '_'))}}">Rank</a>
+
     <h2>Chosose two dates</h2>
 
     <form method="POST" action="{{ url_for('between_dates') }}">

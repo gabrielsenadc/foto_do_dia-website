@@ -139,7 +139,10 @@ def render_index(people):
 
     dates.sort(reverse=True, key=cmp_to_key(compare_dates))
 
-    return render_template('index.html', people=rank, dates=dates)
+    start = "01_08_2023"
+    end = latest_date().replace("/", "_")
+
+    return render_template('index.html', people=rank, dates=dates, start=start, end=end)
 
 def render_sobre(people, date):
     filtered = []
@@ -269,10 +272,19 @@ def register_routes(app, db):
             imgs = Picture.query.all()
             return render_template('upload.html', imgs=imgs)
     
-    @app.route('/ranking')
-    def rank():
+    @app.route('/ranking/<start>/<end>')
+    def rank(start, end):
+
+        start = start.replace("_", "/")
+        end = end.replace("_", "/")
+
         people = Person.query.all()
-        pessoas = sort_people(people)
+        filtered = []
+        for person in people:
+            if compare_dates(person.date, start) >= 0 and compare_dates(person.date, end) <= 0:
+                filtered.append(person)
+                
+        pessoas = sort_people(filtered)
 
         return render_template('rank.html', people=pessoas)
     

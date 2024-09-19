@@ -186,18 +186,18 @@ def register_routes(app, db):
             people = Person.query.all()
             return render_sobre(people, date)
         
-    @app.route('/filter/<day>/<month>/<year>', methods=['GET', 'POST'])
-    def filter(day, month, year):
+    @app.route('/filter/<date>', methods=['GET', 'POST'])
+    def filter(date):
         if request.method == 'GET':
             people = Person.query.all()
-            date = f"{day}/{month}/{year}"
+            date = date.replace("_", "/")
             
             return render_sobre(people, date)
         if request.method == 'POST':
             name = request.form.get('name')
             name = name.lower()
             print(name)
-            date = f"{day}/{month}/{year}"
+            date = date.replace("_", "/")
 
             people = Person.query.all()
 
@@ -251,9 +251,9 @@ def register_routes(app, db):
             return render_template('redirect.html', date=date)
 
 
-    @app.route('/<day>/<month>/<year>')
-    def get_img(day, month, year):
-        date = f"{day}/{month}/{year}"
+    @app.route('/get_img/<date>')
+    def get_img(date):
+        date = date.replace("_", "/")
         img = Picture.query.filter_by(date=date).first()
         if not img:
             return 'Img Not Found!', 404
@@ -288,7 +288,7 @@ def register_routes(app, db):
 
         return render_template('rank.html', people=pessoas)
     
-    @app.route('/<name>')
+    @app.route('/person/<name>')
     def person(name):
         people = Person.query.all()
 

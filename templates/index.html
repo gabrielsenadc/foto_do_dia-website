@@ -42,8 +42,8 @@
 
     <div class="image-grid">
         {% for date in dates%}
-          <div> <a href="{{ url_for('filter', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}">
-            <img src="{{ url_for('get_img', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}"/>
+          <div> <a href="{{ url_for('filter', date=date.replace('/', '_'))}}">
+            <img src="{{ url_for('get_img', date=date.replace('/', '_'))}}"/>
           </a> </div>
         {% endfor %}
     </div>

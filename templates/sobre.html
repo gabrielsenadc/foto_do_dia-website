@@ -23,19 +23,20 @@
 
     <h2>Add someone to this date</h2>
 
-    <form method="POST" action="{{ url_for('filter', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2]) }}">
+    <form method="POST" action="{{ url_for('filter', date=date.replace('/', '_')) }}">
       <input type="text" name="name" placeholder="Name" required="required">
       <input type="submit" value="Create">
     </form>
 
-    <div><img src="{{ url_for('get_img', day=date.split('/')[0], month=date.split('/')[1], year=date.split('/')[2])}}"/></div>
+    <div><img src="{{ url_for('get_img', date=date.replace('/', '_'))}}"/></div>
 
     <div class="footer">
       {% if previous %}
-        <a href="{{ url_for('filter', day=previous.split('/')[0], month=previous.split('/')[1], year=previous.split('/')[2])}}"><div>Previous</div></a>
+        <a href="{{ url_for('filter', date=previous.replace('/', '_'))}}"><div>Previous</div></a>
       {% endif %}
+        <a href="{{url_for('index')}}"><div>Main Page</div></a>
       {% if next %}
-        <a href="{{ url_for('filter', day=next.split('/')[0], month=next.split('/')[1], year=next.split('/')[2])}}"><div>Next</div></a>
+        <a href="{{ url_for('filter', date=next.replace('/', '_'))}}"><div>Next</div></a>
       {% endif %}
     </div>
 </body>

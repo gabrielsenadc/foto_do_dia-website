@@ -18,7 +18,7 @@
     <div class="image-grid">
       {% for img in imgs%}
       <div class="secao">
-        <img src="{{ url_for('get_img', day=img.date.split('/')[0], month=img.date.split('/')[1], year=img.date.split('/')[2] )}}"/>
+        <img src="{{ url_for('get_img', date=img.date.replace('/', '_') )}}"/>
         <div class="options">
           <div>{{ img.date }}</div>
           <form method="POST" action="{{ url_for('delete_img', id=img.id) }}" style="display: inline">

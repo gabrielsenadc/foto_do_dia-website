@@ -38,6 +38,9 @@ def compare(person1, person2):
     if(person1.qtd - person2.qtd): return person1.qtd - person2.qtd
     return compare_dates(person1.last, person2.last)
 
+def compare_imgs(img1, img2):
+    return compare_dates(img1.date, img2.date)
+
 def sort_people(people):
     pessoas = []
     for person in people:
@@ -50,6 +53,11 @@ def sort_people(people):
         if new: pessoas.append(Pessoa(person.name, person.date))
     pessoas.sort(reverse=True, key=cmp_to_key(compare))
     return pessoas
+
+def sort_images(imgs):
+    imgs.sort(reverse=True, key=cmp_to_key(compare_imgs))
+    return imgs
+    
 
 def latest_date():
     images = Picture.query.all()
@@ -144,7 +152,7 @@ def render_index(people):
 
     return render_template('index.html', people=rank, dates=dates, start=start, end=end)
 
-def render_sobre(people, date):
+def render_sobre(people, date, source):
     filtered = []
 
     for person in people:
@@ -155,7 +163,9 @@ def render_sobre(people, date):
 
     if compare_dates(next, latest_date()) > 0: next = None
 
-    return render_template('sobre.html', people=filtered, date=date, previous=previous, next=next)
+    if source: source = source.title()
+
+    return render_template('sobre.html', people=filtered, date=date, previous=previous, next=next, source=source)
 
 def register_routes(app, db):
 
@@ -184,15 +194,15 @@ def register_routes(app, db):
             db.session.commit()
 
             people = Person.query.all()
-            return render_sobre(people, date)
+            return render_sobre(people, date, None)
         
-    @app.route('/filter/<date>', methods=['GET', 'POST'])
-    def filter(date):
+    @app.route('/filter/<date>/<source_name>', methods=['GET', 'POST'])
+    def filter(date, source_name):
         if request.method == 'GET':
             people = Person.query.all()
             date = date.replace("_", "/")
             
-            return render_sobre(people, date)
+            return render_sobre(people, date, source_name)
         if request.method == 'POST':
             name = request.form.get('name')
             name = name.lower()
@@ -217,14 +227,15 @@ def register_routes(app, db):
                 if person.date == date: filtered.append(person)
 
             people = Person.query.all()  
-            return render_sobre(people, date)
+            
+            return render_sobre(people, date, source_name)
 
          
     @app.route('/upload', methods=['GET', 'POST'])
     def upload():
         if request.method == 'GET':
             imgs = Picture.query.all()
-            return render_template('upload.html', imgs=imgs)
+            return render_template('upload.html', imgs=sort_images(imgs))
         elif request.method == 'POST':
             file = request.files['file']
             date = request.form.get('date')
@@ -290,6 +301,7 @@ def register_routes(app, db):
     
     @app.route('/person/<name>')
     def person(name):
+        name = name.lower()
         people = Person.query.all()
 
         list = []
@@ -298,7 +310,7 @@ def register_routes(app, db):
 
         list.sort(reverse=True, key=cmp_to_key(compare_dates))
 
-        return render_template('person.html', name=name, dates=list)
+        return render_template('person.html', name=name.title(), dates=list)
     
     @app.route('/between/<date1>/<date2>')
     def between(date1, date2):

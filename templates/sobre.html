@@ -9,6 +9,7 @@
 <body>
 
   <h1>{{date}}</h1>
+  {{ name }}
   <div>
     <ul>
         {% for person in people%}
@@ -23,7 +24,7 @@
 
     <h2>Add someone to this date</h2>
 
-    <form method="POST" action="{{ url_for('filter', date=date.replace('/', '_')) }}">
+    <form method="POST" action="{{ url_for('filter', date=date.replace('/', '_'), source_name='main') }}">
       <input type="text" name="name" placeholder="Name" required="required">
       <input type="submit" value="Create">
     </form>
@@ -32,11 +33,18 @@
 
     <div class="footer">
       {% if previous %}
-        <a href="{{ url_for('filter', date=previous.replace('/', '_'))}}"><div>Previous</div></a>
+        <a href="{{ url_for('filter', date=previous.replace('/', '_'), source_name=source)}}"><div>Previous</div></a>
       {% endif %}
+
+      {% if source == 'Main' %}
         <a href="{{url_for('index')}}"><div>Main Page</div></a>
+      {% endif %}
+      {% if source != 'Main' %}
+        <a href="{{url_for('person', name=source)}}"><div>{{source}}'s Page</div></a>
+      {% endif %}
+
       {% if next %}
-        <a href="{{ url_for('filter', date=next.replace('/', '_'))}}"><div>Next</div></a>
+        <a href="{{ url_for('filter', date=next.replace('/', '_'), source_name=source)}}"><div>Next</div></a>
       {% endif %}
     </div>
 </body>

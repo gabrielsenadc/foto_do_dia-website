@@ -12,7 +12,7 @@
 
     <div class="image-grid">
         {% for date in dates%}
-          <div> <a href="{{ url_for('filter', date=date.replace('/', '_'))}}">
+          <div> <a href="{{ url_for('filter', date=date.replace('/', '_'), source_name=name)}}">
             <img src="{{ url_for('get_img',date=date.replace('/', '_'))}}"/>
           </a> </div>
         {% endfor %}

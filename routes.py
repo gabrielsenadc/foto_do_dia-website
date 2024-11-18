@@ -194,7 +194,7 @@ def register_routes(app, db):
             db.session.commit()
 
             people = Person.query.all()
-            return render_sobre(people, date, None)
+            return render_sobre(people, date, 'main')
         
     @app.route('/filter/<date>/<source_name>', methods=['GET', 'POST'])
     def filter(date, source_name):
@@ -243,9 +243,6 @@ def register_routes(app, db):
             if date == "":
                 date = latest_date()
                 date = next_date(date)
-
-            print(f"date:{date};")
-            print(type(date))
 
             if not file:
                 return 'No file uploaded!', 400
@@ -345,8 +342,11 @@ def register_routes(app, db):
     @app.route('/between_dates', methods=['POST'])
     def between_dates():
         date1 = request.form.get('date1')
+        if(date1 == ''): date1 = "01/08/2023"
         date1 = date1.replace("/", "_")
+
         date2 = request.form.get('date2')
+        if(date2 == ''): date2 = latest_date()
         date2 = date2.replace("/", "_")
         return redirect(url_for("between", date1=date1, date2=date2))
         

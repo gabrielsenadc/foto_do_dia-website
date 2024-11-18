@@ -38,8 +38,9 @@
 
       {% if source == 'Main' %}
         <a href="{{url_for('index')}}"><div>Main Page</div></a>
-      {% endif %}
-      {% if source != 'Main' %}
+      {% elif source.split("-")[0] == "Between" %}
+        <a href="{{url_for('between', date1=source.split('-')[1], date2=source.split('-')[2])}}"><div>Between Page</div></a>
+      {% else %}
         <a href="{{url_for('person', name=source)}}"><div>{{source}}'s Page</div></a>
       {% endif %}
 

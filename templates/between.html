@@ -19,7 +19,7 @@
 
     <a href="{{ url_for('rank', start=start.replace('/', '_'), end=end.replace('/', '_'))}}">Rank</a>
 
-    <h2>Chosose two dates</h2>
+    <h2>Choose two dates</h2>
 
     <form method="POST" action="{{ url_for('between_dates') }}">
       <input type="text" name="date1" placeholder="Start" required="required"><br>
@@ -31,7 +31,7 @@
 
     <div class="image-grid">
         {% for date in dates%}
-          <div> <a href="{{ url_for('filter', date=date.replace('/', '_'), source_name='main')}}">
+          <div> <a href="{{ url_for('filter', date=date.replace('/', '_'), source_name=('between-' + start.replace('/', '_') + '-' + end.replace('/', '_')))}}">
             <img src="{{ url_for('get_img', date=date.replace('/', '_'))}}"/>
           </a> </div>
         {% endfor %}

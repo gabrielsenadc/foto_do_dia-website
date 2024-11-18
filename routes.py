@@ -294,7 +294,10 @@ def register_routes(app, db):
                 
         pessoas = sort_people(filtered)
 
-        return render_template('rank.html', people=pessoas)
+        if start == "01/08/2023" and end == latest_date(): source = 'main'
+        else: source = "between-" + start.replace("/", "_") + '-' + end.replace("/", "_")
+
+        return render_template('rank.html', people=pessoas, source=source)
     
     @app.route('/person/<name>')
     def person(name):

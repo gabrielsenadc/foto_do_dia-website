@@ -4,7 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/main_page.css') }}">
   <body>
+
+    <div class="header">
+      {% if source == 'main' %}
+        <a href="{{url_for('index')}}"><div>Main Page</div></a>
+      {% else %}
+        <a href="{{url_for('between', date1=source.split('-')[1], date2=source.split('-')[2])}}"><div>Between Page</div></a>
+      {% endif %}
+    </div>
 
     <ul>
         {% for person in people%}

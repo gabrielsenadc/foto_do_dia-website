@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/main_page.css') }}">
   <body>
 
+    <div class="header">
+      <a href="{{ url_for('index')}}">Main Page</a>
+      <a href="{{ url_for('rank',start=start.replace('/', '_'),  end=end.replace('/', '_'))}}">Rank</a>
+    </div>
+
     <h1>{{start}} - {{end}}</h1>
 
     
@@ -16,18 +21,6 @@
         <li> {{ person }} </li>
       {% endfor %}
     </ol>
-
-    <a href="{{ url_for('rank', start=start.replace('/', '_'), end=end.replace('/', '_'))}}">Rank</a>
-
-    <h2>Choose two dates</h2>
-
-    <form method="POST" action="{{ url_for('between_dates') }}">
-      <input type="text" name="date1" placeholder="Start" required="required"><br>
-      <input type="text" name="date2" placeholder="End" required="required"><br>
-      <input type="submit" value="Search">
-    </form>
-
-
 
     <div class="image-grid">
         {% for date in dates%}

@@ -10,7 +10,7 @@ def create_app():
 
     db.init_app(app)
 
-    from routes import register_routes
+    from routes.routes_register import register_routes
     
     register_routes(app, db)
     

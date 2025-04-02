@@ -17,3 +17,9 @@ def register_person(app, db):
         list.sort(reverse=True, key=cmp_to_key(compare_dates))
 
         return render_template('person.html', name=name.title(), dates=list)
+    
+    @app.route('/person', methods=['POST'])
+    def redirect_person():
+        name = request.form.get('name')  
+        name = name.lower()
+        return redirect(url_for("person", name=name))

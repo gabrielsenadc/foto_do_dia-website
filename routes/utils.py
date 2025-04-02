@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template, request, Response, redirect
+from flask import Flask, url_for, render_template, request, Response, redirect, current_app
 from models import Person, Picture
 from werkzeug.utils import secure_filename
 from functools import cmp_to_key
@@ -128,8 +128,8 @@ def previous_date(date):
     if compare_dates(date, "01/08/2023") < 0: return None
     return date
 
-def limit_date():
-    last_date = latest_date()
+def limit_date(last_date):
+    if last_date == "": last_date = latest_date()
 
     day = int(last_date.split("/")[0])
     month = int(last_date.split("/")[1])
@@ -144,6 +144,8 @@ def limit_date():
         
 def render_index(people):
     pessoas = sort_people(people)
+    
+    current_app.limit = limit_date(current_app.limit)
 
     rank = []
     count = 0
@@ -154,7 +156,7 @@ def render_index(people):
 
     dates = []
     images = Picture.query.all()
-    limit = limit_date()
+    limit = current_app.limit
     for image in images:
         if compare_dates(image.date, limit) > 0: dates.append(image.date)
 

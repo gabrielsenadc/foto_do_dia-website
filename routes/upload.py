@@ -10,7 +10,7 @@ def register_upload(app, db):
         if request.method == 'GET':
             images = Picture.query.all()
             imgs = []
-            limit = limit_date("")
+            limit = limit_date()
             for image in images:
                 if compare_dates(image.date, limit) > 0: imgs.append(image)
 

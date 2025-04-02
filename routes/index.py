@@ -14,4 +14,4 @@ def register_index(app, db):
             return render_index(people)
         elif request.method == 'POST':
             people = Person.query.all()
-            return render_index(people)
+            return render_index(people, use_anchor=True)

@@ -128,7 +128,7 @@ def previous_date(date):
     if compare_dates(date, "01/08/2023") < 0: return None
     return date
 
-def limit_date(last_date):
+def limit_date(last_date=""):
     if last_date == "": last_date = latest_date()
 
     day = int(last_date.split("/")[0])
@@ -140,11 +140,16 @@ def limit_date(last_date):
         month = 12
         year -= 1
 
+    if day == 31 and (month == 4 or month == 6 or month == 9 or month == 11): day = 30
+    if day > 28 and month == 2: day = 28 
+
     return f"{day:02d}/{month:02d}/{year:04d}"
         
-def render_index(people):
+def render_index(people, use_anchor=False):
     pessoas = sort_people(people)
-    
+
+    anchor = ""
+    if use_anchor == True: anchor = current_app.limit 
     current_app.limit = limit_date(current_app.limit)
 
     rank = []
@@ -165,7 +170,7 @@ def render_index(people):
     start = "01_08_2023"
     end = latest_date().replace("/", "_")
 
-    return render_template('index.html', people=rank, dates=dates, start=start, end=end)
+    return render_template('index.html', people=rank, dates=dates, start=start, end=end, anchor=anchor)
 
 def render_sobre(people, date, source):
     filtered = []

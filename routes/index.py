@@ -1,7 +1,4 @@
-from flask import Flask, url_for, render_template, request, Response, redirect, current_app
-from models import Person, Picture
-from werkzeug.utils import secure_filename
-from functools import cmp_to_key
+from flask import request, current_app
 from routes.utils import *
 from flask_login import login_required
 

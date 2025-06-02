@@ -1,6 +1,5 @@
-from flask import Flask, url_for, render_template, request, Response, redirect
-from models import Person, Picture
-from werkzeug.utils import secure_filename
+from flask import url_for, render_template, request, redirect
+from models import Person
 from functools import cmp_to_key
 from routes.utils import *
 

@@ -3,15 +3,15 @@ from models import Person, Picture
 from werkzeug.utils import secure_filename
 from functools import cmp_to_key
 from routes.utils import *
+from flask_login import current_user, login_required
 
 def register_filter(app, db):
     @app.route('/filter/<date>/<source_name>', methods=['GET', 'POST'])
+    @login_required
     def filter(date, source_name):
         if request.method == 'GET':
-            people = Person.query.all()
             date = date.replace("_", "/")
-            
-            return render_sobre(people, date, source_name)
+            return render_sobre(date, source_name)
         if request.method == 'POST':
             name = request.form.get('name')
             name = name.lower()
@@ -20,20 +20,12 @@ def register_filter(app, db):
             people = Person.query.all()
 
             for person in people:
-                if person.name == name and person.date == date:
-                    return render_index(people)
+                if person.name == name and person.date == date and person.user_id == current_user.id:
+                    return redirect(url_for('filter', date=date, source_name=source_name))
 
-            person = Person(name=name, date=date)
+            person = Person(name=name, date=date, user_id=current_user.id)
 
             db.session.add(person)
             db.session.commit()
-
-            new_people = Person.query.all()
-            filtered = []
-
-            for person in new_people:
-                if person.date == date: filtered.append(person)
-
-            people = Person.query.all()  
             
-            return render_sobre(people, date, source_name)
+            return render_sobre(date, source_name)

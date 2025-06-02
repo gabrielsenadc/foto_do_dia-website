@@ -19,5 +19,4 @@ def register_delete_someone(app, db):
             
             db.session.commit()
 
-            people = Person.query.all()
-            return render_sobre(people, date, 'main')
+            return render_sobre(date, 'main')

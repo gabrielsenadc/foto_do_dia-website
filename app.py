@@ -1,14 +1,25 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__, template_folder='templates')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./teste.db'
+    app.secret_key = 'segredo'
+
+    login_manager = LoginManager(app)
+    login_manager.login_view = "login"
 
     db.init_app(app)
+
+    from models import User
+
+    @login_manager.user_loader
+    def user_loader(id):
+        return User.query.filter_by(id=id).first()
 
     from routes.routes_register import register_routes
     

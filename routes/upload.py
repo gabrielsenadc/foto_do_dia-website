@@ -3,9 +3,11 @@ from models import Person, Picture
 from werkzeug.utils import secure_filename
 from functools import cmp_to_key
 from routes.utils import *
+from flask_login import current_user, login_required
 
 def register_upload(app, db):
     @app.route('/upload', methods=['GET', 'POST'])
+    @login_required
     def upload():
         if request.method == 'GET':
             images = Picture.query.all()
@@ -31,7 +33,8 @@ def register_upload(app, db):
             if not filename or not mimetype:
                 return 'Bad upload!', 400
 
-            img = Picture(img=file.read(), name=filename, mimetype=mimetype, date=date)
+            img = Picture(img=file.read(), name=filename, mimetype=mimetype, date=date, user_id=current_user.id)
+            
             db.session.add(img)
             db.session.commit()
 

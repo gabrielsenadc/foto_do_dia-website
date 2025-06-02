@@ -3,13 +3,17 @@ from models import Person, Picture
 from werkzeug.utils import secure_filename
 from functools import cmp_to_key
 from routes.utils import *
+from flask_login import current_user
 
 def register_get_img(app, db):
     @app.route('/get_img/<date>')
     def get_img(date):
         date = date.replace("_", "/")
-        img = Picture.query.filter_by(date=date).first()
-        if not img:
-            return 'Img Not Found!', 404
+        imgs = Picture.query.all()
+        
+        for img in imgs:
+            if img.date == date: 
+                if img.user_id == current_user.id:
+                    return Response(img.img, mimetype=img.mimetype)
 
-        return Response(img.img, mimetype=img.mimetype)
+        return 'Img Not Found!', 404

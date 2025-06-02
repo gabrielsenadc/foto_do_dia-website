@@ -2,6 +2,7 @@ from flask import Flask, url_for, render_template, request, Response, redirect, 
 from models import Person, Picture
 from werkzeug.utils import secure_filename
 from functools import cmp_to_key
+from flask_login import current_user
 
 class Pessoa():
 
@@ -145,7 +146,8 @@ def limit_date(last_date=""):
 
     return f"{day:02d}/{month:02d}/{year:04d}"
         
-def render_index(people, use_anchor=False):
+def render_index(use_anchor=False):
+    people = Person.query.filter_by(user_id=current_user.id)
     pessoas = sort_people(people)
 
     anchor = ""
@@ -163,7 +165,7 @@ def render_index(people, use_anchor=False):
     images = Picture.query.all()
     limit = current_app.limit
     for image in images:
-        if compare_dates(image.date, limit) > 0: dates.append(image.date)
+        if compare_dates(image.date, limit) > 0 and image.user_id == current_user.id: dates.append(image.date)
 
     dates.sort(reverse=True, key=cmp_to_key(compare_dates))
 
@@ -172,11 +174,12 @@ def render_index(people, use_anchor=False):
 
     return render_template('index.html', people=rank, dates=dates, start=start, end=end, anchor=anchor)
 
-def render_sobre(people, date, source):
+def render_sobre(date, source):
+    people = Person.query.all()
     filtered = []
 
     for person in people:
-        if person.date == date: filtered.append(person)
+        if person.date == date and person.user_id == current_user.id: filtered.append(person)
 
     next = next_date(date)
     previous = previous_date(date)

@@ -3,15 +3,15 @@ from models import Person, Picture
 from werkzeug.utils import secure_filename
 from functools import cmp_to_key
 from routes.utils import *
+from flask_login import login_required
 
 def register_index(app, db):
     
     @app.route('/', methods=['GET', 'POST'])
+    @login_required
     def index():
         if request.method == 'GET':
-            people = Person.query.all()
             current_app.limit = ""
-            return render_index(people)
+            return render_index()
         elif request.method == 'POST':
-            people = Person.query.all()
-            return render_index(people, use_anchor=True)
+            return render_index(use_anchor=True)

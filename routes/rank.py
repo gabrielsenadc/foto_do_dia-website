@@ -9,7 +9,7 @@ def register_rank(app, db):
         start = start.replace("_", "/")
         end = end.replace("_", "/")
 
-        people = Person.query.all()
+        people = Person.query.filter_by(user_id=current_user.id)
         filtered = []
         for person in people:
             if compare_dates(person.date, start) >= 0 and compare_dates(person.date, end) <= 0:

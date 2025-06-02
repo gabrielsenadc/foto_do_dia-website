@@ -7,8 +7,7 @@ def register_register(app, db):
     @app.route('/register', methods=['GET', 'POST'])
     def register():
         if request.method == 'GET':
-            users = User.query.all()
-            return render_template('register.html', users=users)
+            return render_template('register.html')
         elif request.method == 'POST':
             name = request.form.get('name')
             password = request.form.get('password')

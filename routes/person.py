@@ -7,7 +7,7 @@ def register_person(app, db):
     @app.route('/person/<name>')
     def person(name):
         name = name.lower()
-        people = Person.query.all()
+        people = Person.query.filter_by(user_id=current_user.id)
 
         list = []
         for person in people:

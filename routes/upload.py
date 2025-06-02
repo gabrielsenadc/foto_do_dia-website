@@ -9,7 +9,7 @@ def register_upload(app, db):
     @login_required
     def upload():
         if request.method == 'GET':
-            images = Picture.query.all()
+            images = Picture.query.filter_by(user_id=current_user.id)
             imgs = []
             limit = limit_date()
             for image in images:

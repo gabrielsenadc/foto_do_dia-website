@@ -10,14 +10,14 @@ def register_between(app, db):
             start = date1.replace("_", "/")
             end = date2.replace("_", "/")
             dates = []
-            images = Picture.query.all()
+            images = Picture.query.filter_by(user_id=current_user.id)
             for image in images:
                 if compare_dates(image.date, start) >= 0 and compare_dates(image.date, end) <= 0:
                     dates.append(image.date)
 
             dates.sort(reverse=True, key=cmp_to_key(compare_dates))
             
-            people = Person.query.all()
+            people = Person.query.filter_by(user_id=current_user.id)
             filtered = []
             for person in people:
                 if compare_dates(person.date, start) >= 0 and compare_dates(person.date, end) <= 0:

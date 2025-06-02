@@ -15,10 +15,10 @@ def register_filter(app, db):
             name = name.lower()
             date = date.replace("_", "/")
 
-            people = Person.query.all()
+            people = Person.query.filter_by(user_id=current_user.id)
 
             for person in people:
-                if person.name == name and person.date == date and person.user_id == current_user.id:
+                if person.name == name and person.date == date:
                     return redirect(url_for('filter', date=date, source_name=source_name))
 
             person = Person(name=name, date=date, user_id=current_user.id)

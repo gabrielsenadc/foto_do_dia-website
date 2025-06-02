@@ -8,9 +8,7 @@ def register_login(app, db):
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         if request.method == 'GET':
-            users = User.query.all()
-            print(current_user)
-            return render_template('login.html', users=users)
+            return render_template('login.html')
         elif request.method == 'POST':
             name = request.form.get('name')
             password = request.form.get('password')

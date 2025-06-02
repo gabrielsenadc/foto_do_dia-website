@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import redirect, url_for
 from models import Picture
 from routes.utils import *
 
@@ -12,5 +12,4 @@ def register_delete(app, db):
             
             db.session.commit()
 
-            imgs = Picture.query.all()
-            return render_template('upload.html', imgs=imgs)
+            return redirect(url_for('upload'))

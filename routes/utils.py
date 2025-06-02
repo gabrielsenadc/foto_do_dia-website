@@ -60,7 +60,7 @@ def sort_images(imgs):
     
 
 def latest_date():
-    images = Picture.query.all()
+    images = Picture.query.filter_by(user_id=current_user.id)
 
     date = "01/08/2023"
 
@@ -161,10 +161,10 @@ def render_index(use_anchor=False):
         rank.append(pessoa)
 
     dates = []
-    images = Picture.query.all()
+    images = Picture.query.filter_by(user_id=current_user.id)
     limit = current_app.limit
     for image in images:
-        if compare_dates(image.date, limit) > 0 and image.user_id == current_user.id: dates.append(image.date)
+        if compare_dates(image.date, limit) > 0: dates.append(image.date)
 
     dates.sort(reverse=True, key=cmp_to_key(compare_dates))
 
@@ -174,11 +174,11 @@ def render_index(use_anchor=False):
     return render_template('index.html', people=rank, dates=dates, start=start, end=end, anchor=anchor)
 
 def render_sobre(date, source):
-    people = Person.query.all()
+    people = Person.query.filter_by(user_id=current_user.id)
     filtered = []
 
     for person in people:
-        if person.date == date and person.user_id == current_user.id: filtered.append(person)
+        if person.date == date: filtered.append(person)
 
     next = next_date(date)
     previous = previous_date(date)

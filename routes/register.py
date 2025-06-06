@@ -2,7 +2,7 @@ from flask import url_for, render_template, request, redirect
 from models import User
 from routes.utils import *
 
-def register_register(app, db):
+def register_register(app, db, bcrypt):
     
     @app.route('/register', methods=['GET', 'POST'])
     def register():
@@ -12,7 +12,9 @@ def register_register(app, db):
             name = request.form.get('name')
             password = request.form.get('password')
 
-            user = User(name=name, password=password)
+            hashed_pwd = bcrypt.generate_password_hash(password).decode('utf-8')
+
+            user = User(name=name, password=hashed_pwd)
             db.session.add(user)
             db.session.commit()
 

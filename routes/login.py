@@ -3,7 +3,7 @@ from models import User
 from routes.utils import *
 from flask_login import login_user, logout_user, login_required, current_user
 
-def register_login(app, db):
+def register_login(app, db, bcrypt):
     
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -16,7 +16,7 @@ def register_login(app, db):
             users = User.query.all()
             user_found = False
             for user in users:
-                if user.name == name and user.password == password: 
+                if user.name == name and bcrypt.check_password_hash(user.password, password): 
                     login_user(user)
                     print("logged")
                     user_found = True

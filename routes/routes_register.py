@@ -1,6 +1,6 @@
 from routes.utils import *
 
-def register_routes(app, db):
+def register_routes(app, db, bcrypt):
 
     from routes.index import register_index
     register_index(app, db)
@@ -30,10 +30,10 @@ def register_routes(app, db):
     register_between(app, db)
 
     from routes.register import register_register
-    register_register(app, db)
+    register_register(app, db, bcrypt)
 
     from routes.login import register_login
-    register_login(app, db)
+    register_login(app, db, bcrypt)
     
         
 

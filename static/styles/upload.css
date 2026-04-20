@@ -1,7 +1,12 @@
+body{
+    margin: 0;
+}
+
 .image-grid {
     display: flex;
     gap: 10px;
     flex-direction: column;
+    margin-left: 10px;
 }
 
 img {
@@ -19,4 +24,33 @@ img {
 .secao {
     display: flex;
     gap: 10px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #1a73e8;
+    padding: 15px;
+}
+
+.header a {
+    text-decoration: none;
+    color: black;
+    padding: 5px;
+    background-color: white;
+    border-radius: 10%;
+    font-size: 15px;
+}
+
+.header a:hover {
+    background-color: lightgray;
+}
+
+form {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-left: 10px;
 }

@@ -17,7 +17,7 @@
 
     <ul>
         {% for person in people%}
-          <li> {{ person }} </li>
+          <li> <a style="text-decoration: none;color: black;" href="{{url_for('person', name=person.name)}}"> {{ person }} </a></li>
         {% endfor %}
     </ul>
 

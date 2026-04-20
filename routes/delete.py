@@ -14,5 +14,10 @@ def register_delete(app, db):
             
             db.session.commit()
 
-            imgs = Picture.query.all()
-            return render_template('upload.html', imgs=imgs)
+            images = Picture.query.all()
+            imgs = []
+            limit = limit_date()
+            for image in images:
+                if compare_dates(image.date, limit) > 0: imgs.append(image)
+
+            return render_template('upload.html', imgs=sort_images(imgs))

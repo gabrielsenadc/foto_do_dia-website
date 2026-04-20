@@ -35,4 +35,10 @@ def register_upload(app, db):
             db.session.add(img)
             db.session.commit()
 
-            return render_template('redirect.html', date=date)
+            images = Picture.query.all()
+            imgs = []
+            limit = limit_date()
+            for image in images:
+                if compare_dates(image.date, limit) > 0: imgs.append(image)
+
+            return render_template('upload.html', imgs=sort_images(imgs))

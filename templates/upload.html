@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/upload.css') }}">
   <body>
 
+    <div class="header">
+      <a href="{{ url_for('index')}}">Main Page</a>
+    </div>
+
     <h2>Upload file</h2>
 
     <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/upload.css') }}">
+  <body>
+    <div class="header">
+      <a href="{{ url_for('index')}}">Main Page</a>
+    </div>
+
+    <h2>Rename someone</h2>
+
+    <form method="POST" action="{{ url_for('rename') }}">
+      <input type="text" name="source_name" placeholder="Source name" required="required"><br>
+      <input type="text" name="dest_name" placeholder="Dest name" required="required"><br>
+      <input type="submit" value="Rename">
+    </form>
+
+
+  </body>
+</html>

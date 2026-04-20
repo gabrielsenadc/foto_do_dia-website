@@ -32,6 +32,9 @@ def register_routes(app, db):
     
     from routes.between import register_between
     register_between(app, db)
+
+    from routes.rename import register_rename
+    register_rename(app, db)
     
         
 
